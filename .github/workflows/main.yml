@@ -12,14 +12,13 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
-        if: startsWith(matrix.python-version, runner.os) # 조건문 추가
-        uses: actions/setup-python@v4
-        with:
-          python-version: ${{ matrix.python-version }}
+        run: |
+          sudo apt-get install python${{ matrix.python-version }}
+          python${{ matrix.python-version }} -m pip install --upgrade pip
       - name: Display Python version
-        run: python -c "import sys; print(sys.version)" > python_version.txt
+        run: python${{ matrix.python-version }} -c "import sys; print(sys.version)" > python_version_${{ matrix.python-version }}.txt
       - name: Save Python version as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: python-version
-          path: python_version.txt
+          name: python-version-${{ matrix.python-version }}
+          path: python_version_${{ matrix.python-version }}.txt
