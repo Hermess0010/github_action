@@ -12,19 +12,20 @@ jobs:
 
     steps:
       - uses: actions/checkout@v3
+
       - name: Set up Python ${{ matrix.python-version }}
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y make build-essential libssl-dev zlib1g-dev libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm libncurses5-dev libncursesw5-dev xz-utils tk-dev libffi-dev liblzma-dev python-openssl
-          curl https://pyenv.run | bash
-          export PATH="/root/.pyenv/bin:$PATH"
-          eval "$(pyenv init -)"
-          eval "$(pyenv virtualenv-init -)"
-          pyenv install ${matrix.python-version}
-          pyenv global ${matrix.python-version}
-          python --version > python_version_${{ matrix.python-version }}.txt
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Display Python version
+        run: python -c "import sys; print(sys.version)"
+        id: display-version
+        env:
+          PYTHON_VERSION: ${{ matrix.python-version }}
+
       - name: Save Python version as artifact
         uses: actions/upload-artifact@v2
         with:
           name: python-version-${{ matrix.python-version }}
-          path: python_version_${{ matrix.python-version }}.txt
+          path: python_version_${{ env.PYTHON_VERSION }}.txt
