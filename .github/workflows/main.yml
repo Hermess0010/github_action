@@ -19,10 +19,11 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
+        run: python -c "import sys; print(sys.version)" > python_version_${{ matrix.python-version }}.txt
         id: display-version
         env:
-          PYTHON_VERSION: ${{ matrix.python-version }}
+         PYTHON_VERSION: ${{ matrix.python-version }}
+
 
       - name: Save Python version as artifact
         uses: actions/upload-artifact@v2
