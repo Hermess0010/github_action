@@ -17,9 +17,9 @@ jobs:
         with:
           python-version: ${{ matrix.python-version }}
       - name: Display Python version
-        run: python -c "import sys; print(sys.version)"
-      - name: Save output as artifact
+        run: python -c "import sys; print(sys.version)" > python_version.txt
+      - name: Save Python version as artifact
         uses: actions/upload-artifact@v2
         with:
-          name: python-output
-          path: ./
+          name: python-version
+          path: python_version.txt
