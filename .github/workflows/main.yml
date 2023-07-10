@@ -4,7 +4,6 @@ on: workflow_dispatch
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -13,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Set up Python ${{ matrix.python-version }}
+        if: startsWith(matrix.python-version, runner.os) # 조건문 추가
         uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
